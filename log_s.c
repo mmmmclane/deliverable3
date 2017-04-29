@@ -34,6 +34,7 @@ void error(const char *msg)
 int main(int argc, char *argv[])
 {
    int sock, length, n;
+   int num_args=argc, port=9999;
    socklen_t fromlen;
    struct sockaddr_in server;
    struct sockaddr_in from;
@@ -44,13 +45,27 @@ int main(int argc, char *argv[])
       exit(0);
    }
    
+   std::string arg;
+   if(num_args > 2)
+   {
+	   for(int i = 1; i < num_args; i++)
+	   {
+		   arg = argv[i];
+		   if(arg == "-port")
+		   {
+				port = atoi(argv[i+1]);
+		   }
+	   }
+   }
+   
+   
    sock=socket(AF_INET, SOCK_DGRAM, 0);
    if (sock < 0) error("Opening socket");
    length = sizeof(server);
    bzero(&server,length);
    server.sin_family=AF_INET;
    server.sin_addr.s_addr=INADDR_ANY;
-   server.sin_port=htons(atoi(argv[1]));
+   server.sin_port=htons(port);
    if (bind(sock,(struct sockaddr *)&server,length)<0) 
        error("binding");
    fromlen = sizeof(struct sockaddr_in);

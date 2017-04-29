@@ -58,7 +58,6 @@ int main(int argc, char *argv[])
 	   }
    }
    
-   
    sock=socket(AF_INET, SOCK_DGRAM, 0);
    if (sock < 0) error("Opening socket");
    length = sizeof(server);
@@ -69,7 +68,6 @@ int main(int argc, char *argv[])
    if (bind(sock,(struct sockaddr *)&server,length)<0) 
        error("binding");
    fromlen = sizeof(struct sockaddr_in);
-   
    
    std::ofstream logfile;
    

@@ -23,6 +23,13 @@
 #include <iostream>
 #include <algorithm>
 
+volatile sig_atomic_t flag = 1;
+
+void handle_sig(int sig)
+{
+	flag = 0;
+}
+
 // handle TCP messages and send them to log server
 void dostuff(int); 
 
@@ -215,15 +222,18 @@ void waitForCommunication(int tcpsock, int udpsock){
 	struct sockaddr_in c_addr;
 	ssize_t n;
 	char buffer[1024];
+	char buf_ctrl[] = {"echo_s is stopping"};
 	socklen_t clientlength;
 	clientlength = sizeof(struct sockaddr_in);
 
+	
 	signal(SIGCHLD,SIG_IGN);
+	signal(SIGINT, handle_sig);
 	FD_ZERO(&fileset);
 	maxsock = std::max(tcpsock, udpsock) + 1;
 	
 	
-	while(1){
+	while(flag){
 		FD_SET(tcpsock, &fileset);
 		FD_SET(udpsock, &fileset);
 		if((ready = select(maxsock, &fileset, NULL, NULL, NULL)) < 0)
@@ -280,6 +290,7 @@ void waitForCommunication(int tcpsock, int udpsock){
 			}
 		}
 	}
+	logMessage(buf_ctrl);
 	close(tcpsock);
 	return;
 }
@@ -291,7 +302,7 @@ void logMessage(char buffer[])
 	struct sockaddr_in server;
 	struct hostent *hp;
 //	char buffer[256];
-	char const *args[] = {"localhost", "9999"};
+	char const *args[] = {"localhost", "8888"};
 	
 	
 	sock = socket(AF_INET, SOCK_DGRAM, 0);

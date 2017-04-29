@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
        error("binding");
    fromlen = sizeof(struct sockaddr_in);
    
+   
    std::ofstream logfile;
    
    while (1) {

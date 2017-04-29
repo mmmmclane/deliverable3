@@ -44,15 +44,42 @@ void logMessage(char buffer[]);
 int main(int argc, char *argv[])
 {
 	int udpfd, tcpfd, port;
+	int num_ports=0, num_args=argc;
+	char *port_args[num_args];
+	std::string logip="";
 	int pid1, pid2;
 	struct sockaddr_in serv_addr;
 
 	// make sure user passes in port number
 	if (argc < 2) {
-		fprintf(stderr,"ERROR, no port provided\n");
+		fprintf(stderr,"ERROR, incorrect number or args\n");
 		exit(1);
 	}
-	if(argc > 2)
+	
+	std::string arg;
+	for(int i = 1; i < num_args; i++)
+	{
+		arg = argv[i];
+		if(arg != "-logip")
+		{
+			port_args[num_ports] = argv[i];
+			num_ports++;
+		}
+		else
+		{
+			logip = argv[i+1];
+			break;
+		}
+	}
+	
+	// tests for argument management above
+	// for(int i = 0; i < num_ports; i++)
+	// {
+			// std::cout << port_args[i] << " "; 
+	// }
+	// std::cout << "\n" << logip << " " << logipaddress << "\n";
+	
+	if(num_ports > 2)
 	{
 		pid1 = fork();
 		if(pid1 < 0)
@@ -61,13 +88,13 @@ int main(int argc, char *argv[])
 		}
 		if(pid1 == 0)
 		{
-			port = atoi(argv[2]);
+			port = atoi(port_args[1]);
 			tcpfd = createTCPSock(port, serv_addr);
 			udpfd = createUDPSock(port, serv_addr);
 			waitForCommunication(tcpfd, udpfd);
 			exit(0);
 		}
-		if(argc > 3)
+		if(num_ports > 3)
 		{
 			pid2 = fork();
 			if(pid2 < 0)
@@ -76,7 +103,7 @@ int main(int argc, char *argv[])
 			}
 			if(pid2 == 0)
 			{
-				port = atoi(argv[3]);
+				port = atoi(port_args[2]);
 				tcpfd = createTCPSock(port, serv_addr);
 				udpfd = createUDPSock(port, serv_addr);
 				waitForCommunication(tcpfd, udpfd);
@@ -85,7 +112,7 @@ int main(int argc, char *argv[])
 		}		
 	}
 	
-	port = atoi(argv[1]);
+	port = atoi(port_args[0]);
 	tcpfd = createTCPSock(port, serv_addr);
 	udpfd = createUDPSock(port, serv_addr);
 	waitForCommunication(tcpfd, udpfd);
@@ -101,7 +128,6 @@ int main(int argc, char *argv[])
 void dostuff (int sock)
 {
 	int n;
-	int pid3;
 	char buffer[256];
 	bzero(buffer,256);
 
@@ -256,10 +282,10 @@ void logMessage(char buffer[])
 {
 	int sock, n;
 	unsigned int length;
-	struct sockaddr_in server, from;
+	struct sockaddr_in server;
 	struct hostent *hp;
 //	char buffer[256];
-	char *args[] = {"localhost", "9999"};
+	char const *args[] = {"localhost", "9999"};
 	
 	
 	sock = socket(AF_INET, SOCK_DGRAM, 0);

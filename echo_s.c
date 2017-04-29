@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 	int num_ports=0, num_args=argc;
 	char *port_args[num_args];
 	std::string logip="";
+	int logport=0;
 	int pid1, pid2;
 	struct sockaddr_in serv_addr;
 
@@ -60,15 +61,20 @@ int main(int argc, char *argv[])
 	for(int i = 1; i < num_args; i++)
 	{
 		arg = argv[i];
-		if(arg != "-logip")
+		if(arg == "-logip")
 		{
-			port_args[num_ports] = argv[i];
-			num_ports++;
+			logip = argv[i+1];
+			i++;
+		}
+		else if(arg == "-logport")
+		{
+			logport = atoi(argv[i+1]);
+			i++;
 		}
 		else
 		{
-			logip = argv[i+1];
-			break;
+			port_args[num_ports] = argv[i];
+			num_ports++;
 		}
 	}
 	

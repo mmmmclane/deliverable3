@@ -1,14 +1,12 @@
-Group 9, Second Deliverable
+Group 9, Third Deliverable
 
-Members: Stephen Ballenger | netID: smb160530
-         Tushara John | netID: tmj150130
-         Carla Macias Montoya | netID: cxm150730
-         Dawood Nadurath | netID: dsn150130
-         Auveed Saki | netID: axs157130
+Members: Stephen Ballenger | netID: smb160530 | user1
+         Tushara John | netID: tmj150130 | user2
+         Carla Macias Montoya | netID: cxm150730 | user3
+         Dawood Nadurath | netID: dsn150130 | user4
+         Auveed Saki | netID: axs157130 | user5 and user 6
 
-Roles/Responsilibites: Overall, we collaborated as a team to complete the second deliverable. 
-Tushara and Carla worked on the multi-port functionality in echo_s, while Stephen, Auveed, and Dawood
-worked on logging messages from echo_s to log_s. 
+Roles/Responsilibites: Each group member completed their assigned task (as detailed above by user#) and updated the master on github.
 
 
 1. Compile all files using 'make'

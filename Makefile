@@ -14,4 +14,4 @@ log_s:		log_s.c
 	$(CC) $(FLAGS) -o $@ log_s.c
 	
 clean:
-	rm echo_c echo_s log_s
+	rm echo_c echo_s log_s echo.log

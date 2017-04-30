@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 		n = recvfrom(sock,buffer,256,0,(struct sockaddr *)&from, &length);
 		//error in recvfrom
                 if (n < 0) error("recvfrom");
-		write(1,"Got an ack: ",12);
+		write(1,"RESPONSE: ", 10);
 		write(1,buffer,n);
 		close(sock);
 		return 0;
